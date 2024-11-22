@@ -6,6 +6,7 @@ function FileUpload() {
   const [processingResult, setProcessingResult] = useState(null)
   const [message, setMessage] = useState('')
   const [researchGaps, setResearchGaps] = useState(null)
+  const [entropyResults, setEntropyResults] = useState(null)
 
   // Manejo de selección de archivo
   const handleFileChange = (e) => {
@@ -64,10 +65,41 @@ function FileUpload() {
       )
 
       setResearchGaps(analyzeResponse.data.research_gaps)
+      console.log('Research Gaps:', analyzeResponse.data.research_gaps)
       setMessage('Research Gaps Analyzed Successfully')
     } catch (error) {
       console.error(error)
       setMessage('Error analyzing research gaps')
+    }
+  }
+
+  const handleValidate = async () => {
+    if (!researchGaps || !processingResult) {
+      setMessage('Please analyze research gaps first')
+      return
+    }
+    try {
+      setMessage('Validating data Entropy...')
+      const validateResponse = await axios.post(
+        'http://127.0.0.1:8000/validate/',
+        {
+          research_gaps: researchGaps,
+          authors: processingResult.authors,
+          institutions: processingResult.institutions,
+          technologies: processingResult.technologies,
+          sections: processingResult.sections
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
+      setEntropyResults(validateResponse.data)
+      setMessage('Entropy Validated Successfully')
+    } catch (error) {
+      console.error(error)
+      setMessage('Error validating entropy')
     }
   }
 
@@ -77,6 +109,9 @@ function FileUpload() {
       <button onClick={handleUploadAndProcess}>Upload and Process File</button>
       <button onClick={handleAnalyze} disabled={!processingResult}>
         Analyze Research Gaps
+      </button>
+      <button onClick={handleValidate} disabled={!researchGaps}>
+        Validate Entropy
       </button>
       {message && <p>{message}</p>}
       {processingResult && (
@@ -89,6 +124,12 @@ function FileUpload() {
         <div>
           <h3>Research Gaps Identified:</h3>
           <p>{researchGaps}</p>
+        </div>
+      )}
+      {entropyResults && (
+        <div>
+          <h3>Entropy Validation Results:</h3>
+          <pre>{JSON.stringify(entropyResults, null, 2)}</pre>
         </div>
       )}
     </div>
