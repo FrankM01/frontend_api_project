@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import '../FileUpload.css'
 
 function FileUpload() {
   const [selectedFile, setSelectedFile] = useState(null)
@@ -104,30 +105,48 @@ function FileUpload() {
   }
 
   return (
-    <div className='file-upload'>
-      <input type='file' accept='application/pdf' onChange={handleFileChange} />
-      <button onClick={handleUploadAndProcess}>Upload and Process File</button>
-      <button onClick={handleAnalyze} disabled={!processingResult}>
-        Analyze Research Gaps
-      </button>
-      <button onClick={handleValidate} disabled={!researchGaps}>
-        Validate Entropy
-      </button>
-      {message && <p>{message}</p>}
+    <div className='file-upload-container'>
+      <h2 className='upload-title'>Upload your article</h2>
+      <div className='file-upload-section'>
+        <input
+          type='file'
+          accept='application/pdf'
+          onChange={handleFileChange}
+          className='file-input'
+        />
+        <button onClick={handleUploadAndProcess} className='upload-button'>
+          Process File
+        </button>
+        <button
+          onClick={handleAnalyze}
+          className='analyze-button'
+          disabled={!processingResult}
+        >
+          Analyze Research Gaps
+        </button>
+        <button
+          onClick={handleValidate}
+          className='validate-button'
+          disabled={!researchGaps}
+        >
+          Validate Entropy
+        </button>
+      </div>
+      {message && <p className='status-message'>{message}</p>}
       {processingResult && (
-        <div>
-          <h3>Resultado del Procesamiento:</h3>
+        <div className='result-section'>
+          <h3>Processing Result:</h3>
           <pre>{JSON.stringify(processingResult, null, 2)}</pre>
         </div>
       )}
       {researchGaps && (
-        <div>
+        <div className='result-section'>
           <h3>Research Gaps Identified:</h3>
           <p>{researchGaps}</p>
         </div>
       )}
       {entropyResults && (
-        <div>
+        <div className='result-section'>
           <h3>Entropy Validation Results:</h3>
           <pre>{JSON.stringify(entropyResults, null, 2)}</pre>
         </div>

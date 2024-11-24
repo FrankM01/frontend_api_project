@@ -1,0 +1,38 @@
+.result-display {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #41adff;
+  border-radius: 10px;
+  background-color: #1a242f;
+  color: #ffffff;
+  font-family: 'Cascadia Code', monospace;
+}
+
+.result-display h3 {
+  margin-bottom: 10px;
+  color: #41adff;
+  text-align: center;
+}
+
+.result-content {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #0b1624;
+  border-radius: 5px;
+  border: 1px solid #41adff;
+}
+
+.result-content ul {
+  list-style: none;
+  padding-left: 10px;
+}
+
+.result-content ul li {
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+
+.result-content ul li strong {
+  color: #00d1ff;
+}
